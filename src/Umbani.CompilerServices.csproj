@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.0">
+    <PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+        <!--
+            Even though we're not producing an assembly, this is still required by the SDK:
+            https://stackoverflow.com/questions/71596190/why-does-msbuild-notargets-csproj-requires-targetframework.
+        -->
+        <TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
+        <NoDefaultExcludes>true</NoDefaultExcludes>
+        <RootNamespace></RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <CSharpContentFiles Include="**/*.cs" Exclude="bin/**/*.cs;obj/**/*.cs" />
+        <Compile Include="@(CSharpContentFiles)">
+            <Pack>true</Pack>
+            <PackagePath>contentFiles\cs\net35\Umbani\CompilerServices</PackagePath>
+        </Compile>
+        <Compile Include="@(CSharpContentFiles)">
+            <Pack>true</Pack>
+            <PackagePath>contentFiles\cs\net48\Umbani\CompilerServices</PackagePath>
+        </Compile>
+        <Compile Include="@(CSharpContentFiles)">
+            <Pack>true</Pack>
+            <PackagePath>contentFiles\cs\netstandard2.0\Umbani\CompilerServices</PackagePath>
+        </Compile>
+        <Compile Include=".editorconfig">
+            <Pack>true</Pack>
+            <PackagePath>contentFiles\</PackagePath>
+        </Compile>
+    </ItemGroup>
+
+    <Target Name="CleanGeneratedNuGetPackages" AfterTargets="BeforeClean">
+        <ItemGroup>
+            <GeneratedNuGetPackages Remove="@(GeneratedNuGetPackages)" />
+            <GeneratedNuGetPackages Include="$(MSBuildThisFileDirectory)bin\$(Configuration)\$(MSBuildProjectName).*.nupkg" />
+        </ItemGroup>
+        <Delete Files="@(GeneratedNuGetPackages)" />
+    </Target>
+
+    <Target Name="PublishProject" DependsOnTargets="CheckVersion;DownloadNuGet">
+        <ItemGroup>
+            <NuGetPackages Remove="@(NuGetPackages)" />
+            <NuGetPackages Include="$(MSBuildThisFileDirectory)bin\$(Configuration)\$(MSBuildProjectName).$(Version).nupkg" />
+        </ItemGroup>
+        <Exec Command="$(NuGetTool) push &quot;%(NuGetPackages.Identity)&quot; -Source Nis-unstable -NonInteractive -ApiKey $(ProGetUser):$(ProGetPassword)" />
+    </Target>
+</Project>

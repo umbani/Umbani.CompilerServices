@@ -1,0 +1,8 @@
+﻿// Avoid looking for .editorconfig files in parent directories
+root=true
+
+[*.cs]
+
+# Disable all analyzer rules for the source files as their are located outside the solution in which they are included, and hence
+# the .editorconfig of that solution does not apply to these source files leading to diagnostics being reported.
+dotnet_analyzer_diagnostic.severity = none
