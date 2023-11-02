@@ -2,5 +2,7 @@
     <PropertyGroup>
         <Authors>Gert Driesen</Authors>
         <Company>Umbani</Company>
+        <RepositoryUrl>https://github.com/umbani/Umbani.CompilerServices.git</RepositoryUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
 </Project>

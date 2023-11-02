@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.0">
     <PropertyGroup>
+        <Description>A source code only package that allows you to use .NET's new nullable attributes, required modifier, init keyword and CallerArgumentExpressionAttribute when targeting older target frameworks like .NET Standard 2.0 or the .NET Framework.</Description>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <NoWarn>$(NoWarn);NU5128</NoWarn>
         <!--
@@ -25,10 +26,11 @@
             <Pack>true</Pack>
             <PackagePath>contentFiles\cs\netstandard2.0\Umbani\CompilerServices</PackagePath>
         </Compile>
-        <Compile Include=".editorconfig">
+        <None Include=".editorconfig">
             <Pack>true</Pack>
             <PackagePath>contentFiles\</PackagePath>
-        </Compile>
+        </None>
+        <None Include="..\LICENSE" Pack="true" PackagePath=""/>
     </ItemGroup>
 
     <Target Name="CleanGeneratedNuGetPackages" AfterTargets="BeforeClean">
